@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class ballotboxes
 {
@@ -9,38 +9,48 @@ public class ballotboxes
         int N = s.nextInt();
         int B = s.nextInt();
         StringBuilder result = new StringBuilder();
+        PriorityQueue<City> cities = new PriorityQueue<>();
         while( N != -1 )
         {
-            int[] population = new int[N + 1];
-            int[] ballots = new int[N + 1];
-            Arrays.fill(ballots, 1);
-            Arrays.sort(population);
-            for( int i = 1; i < N + 1; i++ )
+            for( int i = 0; i < N; i++ )
             {
-                population[i] = s.nextInt();
+                cities.add(new City(s.nextInt()));
             }
+            City mostPopulated;
             while( B-- > N )
             {
-                int maxIndex = 0;
-                for( int i = 1; i < N + 1; i++ )
-                {
-                    if( (double) population[i] / ballots[i] > (double) population[maxIndex] / ballots[maxIndex] )
-                    {
-                        maxIndex = i;
-                    }
-                }
-                ballots[maxIndex]++;
+                mostPopulated = cities.poll();
+                mostPopulated.addBallot();
+                cities.add(mostPopulated); 
             }
-            double[] ratio = new double[N + 1];
-            for( int i = 1; i < N + 1; i++ )
-            {
-                ratio[i] = (double) population[i] / ballots[i];
-            }
-            Arrays.sort(ratio);
-            result.append((int) Math.ceil(ratio[N])).append("\n");
+            result.append(cities.peek().ratio).append("\n");
             N = s.nextInt();
             B = s.nextInt();
+            cities.clear();
         }
         System.out.print(result);
+    }
+
+    static class City implements Comparable<City>
+    {
+        int population;
+        int ballots = 1;
+        int ratio;
+
+        public City(int pPopulation)
+        {
+            population = pPopulation;
+            ratio = pPopulation;
+        }
+
+        public void addBallot()
+        {
+            ratio = (int) Math.ceil((double) population / ++ballots);
+        }
+
+        public int compareTo(City pCity)
+        {
+            return pCity.ratio - ratio;
+        }
     }
 }
