@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Arrays;
+import java.math.BigInteger;;
 
 public class minimumscalar 
 {
@@ -9,10 +10,10 @@ public class minimumscalar
         int T = s.nextInt();
         int length;
         int num = 1;
-        long min;
+        
         for( int i = 0; i < T; i++ )
         {
-            min = 0;
+            BigInteger min = new BigInteger("0");
             length = s.nextInt();
             int[] v1 = new int[length];
             int[] v2 = new int[length];
@@ -28,7 +29,7 @@ public class minimumscalar
             Arrays.sort(v2);
             for( int j = 0; j < length; j++ )
             {
-                min += v1[j] * v2[length - 1 - j];
+                min = min.add(BigInteger.valueOf(v1[j]).multiply(BigInteger.valueOf(v2[length - 1 - j])));
             }
             System.out.println("Case #" + num + ": " + min);
             num++;
