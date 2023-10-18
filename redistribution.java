@@ -26,6 +26,7 @@ public class redistribution
         Room[] rooms = new Room[numRooms];
         for( int i = 0; i < numRooms; i++ )
         {
+            
             rooms[i] = new Room(i, s.nextInt());
         }
         Arrays.sort(rooms);
